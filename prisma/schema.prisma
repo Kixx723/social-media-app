@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @default(autoincrement())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  email          String    @unique
+  password       String
+  firstName      String
+  lastName       String
+  profilePicture String?
+  bio            String?
+  joinDate       DateTime  @default(now())
+
+  // One-to-Many relationship with Post
+  posts Post[]
+  
+  // One-to-Many relationship with Comment
+  comments Comment[]
+  
+  // One-to-Many relationship with Like
+  likes Like[]
+  
+  @@unique([id])
+}
+
+model Post {
+  id         Int       @default(autoincrement())
+  userId         Int       
+  content        String
+  timestamp      DateTime @default(now())
+  likesCount     Int
+  commentsCount  Int
+
+  // Foreign key reference to User
+  user User @relation(fields: [userId], references: [id])
+
+  // One-to-Many relationship with Comment
+  comments Comment[]
+
+  // One-to-Many relationship with Like
+  likes Like[]
+
+  @@unique([id])
+}
+
+model Comment {
+  id     Int       @id @default(autoincrement())
+  postId        Int
+  userId        Int
+  content       String
+  timestamp     DateTime @default(now())
+  
+  // Foreign key references
+  post          Post      @relation(fields: [postId], references: [id])
+  user          User      @relation(fields: [userId], references: [id])
+
+  @@unique([id])
+}
+
+model Like {
+  id        Int       @id @default(autoincrement())
+  postId        Int
+  userId        Int
+  timestamp     DateTime @default(now())
+  
+  // Foreign key references
+  post          Post      @relation(fields: [postId], references: [id])
+  user          User      @relation(fields: [userId], references: [id])
+
+  @@unique([id])
+}
