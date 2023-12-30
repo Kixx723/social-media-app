@@ -16,7 +16,6 @@ import { PostService } from './post.service';
 import { JwtGuard } from 'src/auth/Guard';
 import { GetUser } from 'src/auth/decorator';
 import { CreatePostDto, EditPostDto } from './dto';
-import { ok } from 'assert';
 
 @UseGuards(JwtGuard)
 @Controller('posts')
@@ -45,11 +44,15 @@ export class PostController {
   }
 
   @Patch(':id')
-  editPostById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) postId: number,@Body() dto: EditPostDto) {
+  editPostById(
+    @GetUser('id') userId: number,
+    @Param('id', ParseIntPipe) postId: number,
+    @Body() dto: EditPostDto,
+  ) {
     return this.postService.editPostById(userId, postId, dto);
   }
-  
-  // PWEDE SAD NI NA METHOD NA GAMITON ANG Request() method tapos kwaon ang userId 
+
+  // PWEDE SAD NI NA METHOD NA GAMITON ANG Request() method tapos kwaon ang userId
   // @Patch(':id')
   // editPostById(@Request() req, @Param('id', ParseIntPipe) postId: number,@Body() dto: EditPostDto) {
   //   const userId = req.user.id;

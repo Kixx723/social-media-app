@@ -35,7 +35,7 @@ model User {
 }
 
 model Post {
-  id         Int       @default(autoincrement())
+  id          Int       @default(autoincrement())
   userId         Int       
   content        String
   timestamp      DateTime @default(now())

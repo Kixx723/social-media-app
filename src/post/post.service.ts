@@ -32,14 +32,28 @@ export class PostService {
       where: {
         id: postId,
       },
+      include: {
+        user: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+        //todo likes: true,
+      },
     });
+
+    // calculate the comments count
+    const commentsCount = post.comments.length;
+    //todo calculate the likes count
+    //todo const likesCount = post.likes.length;
 
     // check if the post exist
     if (!post) {
       throw new NotFoundException('Post does not exist');
     }
 
-    return post;
+    return { ...post, commentsCount };
   }
 
   async createPost(userId: number, dto: CreatePostDto) {
