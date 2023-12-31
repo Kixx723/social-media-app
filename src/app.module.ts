@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { CommentModule } from './comment/comment.module';
     PrismaModule,
     PostModule,
     CommentModule,
+    LikeModule,
   ],
   controllers: [],
   providers: [],

@@ -39,21 +39,26 @@ export class PostService {
             user: true,
           },
         },
-        //todo likes: true,
+        likes: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
-    // calculate the comments count
-    const commentsCount = post.comments.length;
-    //todo calculate the likes count
-    //todo const likesCount = post.likes.length;
-
     // check if the post exist
     if (!post) {
-      throw new NotFoundException('Post does not exist');
+      throw new NotFoundException('Post not found');
     }
 
-    return { ...post, commentsCount };
+    // calculate the comments count
+    const commentsCount = post.comments.length;
+
+    //calculate the likes count
+    const likesCount = post.likes.length;
+
+    return { ...post, commentsCount, likesCount };
   }
 
   async createPost(userId: number, dto: CreatePostDto) {
@@ -110,3 +115,5 @@ export class PostService {
     });
   }
 }
+
+//todo buhat ug logout fuctionality
